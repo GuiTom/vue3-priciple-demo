@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue3 Router Implementation Demo</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script type="module">
+        const { createApp, h } = Vue
+        import { Router, RouterView, RouterLink } from './router.js'
+        import { Home, About, User } from './components.js'
+
+        // 创建路由实例
+        const router = new Router({
+            routes: [
+                { path: '/', component: Home },
+                { path: '/about', component: About },
+                { path: '/user', component: User }
+            ]
+        })
+
+        // 创建Vue应用
+        const app = createApp({
+            setup() {
+                return () => h('div', null, [
+                    h('h1', null, 'Vue3 Router Demo'),
+                    h('nav', null, [
+                        h(RouterLink, { to: '/' }, () => 'Home'),
+                        h('span', null, ' | '),
+                        h(RouterLink, { to: '/about' }, () => 'About'),
+                        h('span', null, ' | '),
+                        h(RouterLink, { to: '/user' }, () => 'User')
+                    ]),
+                    h(RouterView)
+                ])
+            }
+        })
+
+        // 注册全局组件
+        app.component('RouterLink', RouterLink)
+        app.component('RouterView', RouterView)
+
+        // 使用路由插件
+        app.use(router)
+
+        // 挂载应用
+        app.mount('#app')
+    </script>
+
+    <style>
+        nav {
+            padding: 20px 0;
+        }
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #2c3e50;
+        }
+        nav a.router-link-active {
+            color: #42b983;
+        }
+    </style>
+</body>
+</html>
